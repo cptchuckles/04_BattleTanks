@@ -1,0 +1,10 @@
+{
+	"typescript.tsc.autoDetect": "off",
+	"files.exclude": {
+		"E:/Projects/Udemy/repo/04_BattleTanks/BattleTanks/.vs": true,
+		"E:/Projects/Udemy/repo/04_BattleTanks/BattleTanks/.vscode": true,
+		"E:/Projects/Udemy/repo/04_BattleTanks/BattleTanks/Content": true,
+		"E:/Projects/Udemy/repo/04_BattleTanks/BattleTanks/Intermediate": true,
+		"E:/Projects/Udemy/repo/04_BattleTanks/BattleTanks/Saved": true
+	}
+}
