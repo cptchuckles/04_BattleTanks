@@ -19,5 +19,6 @@ private:
 	
 public:
 	virtual void BeginPlay() override;
+	ATank* GetTank();
 	
 };
