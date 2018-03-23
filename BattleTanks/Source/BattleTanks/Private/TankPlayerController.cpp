@@ -1,5 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Camera/CameraActor.h"
+#include "CollisionQueryParams.h"
 #include "TankPlayerController.h"
 
 
@@ -26,10 +28,27 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     
-    FVector AimDirection = FVector(0.0f);
+    if(LineTraceTankAim()) UE_LOG(LogTemp, Warning, TEXT("line good"));
+}
+
+bool ATankPlayerController::LineTraceTankAim() const
+{
+    auto AimDirection = FVector(0.0f);
     GetAimDirection(AimDirection);
     
-    UE_LOG(LogTemp, Warning, TEXT("Aim Direction: %s"), *(AimDirection.ToString()));
+    //get start and end of trace line
+    auto CamPos = GetAutoActivateCameraForPlayer()->GetActorLocation(); //start
+    auto TraceEnd = CamPos + AimDirection*ShootRange;                   //end
+    
+    FHitResult HitResult; //output
+    return GetWorld()->LineTraceSingleByChannel
+        (
+            HitResult,
+            CamPos, TraceEnd,
+            ECollisionChannel::ECC_Visibility,
+            FCollisionQueryParams::DefaultQueryParam,
+            FCollisionResponseParams::DefaultResponseParam
+        );
 }
 
 bool ATankPlayerController::GetAimDirection(FVector& OutAimDirection) const
