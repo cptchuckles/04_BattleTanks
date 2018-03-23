@@ -17,8 +17,18 @@ class BATTLETANKS_API ATankPlayerController : public APlayerController
 private:
 	ATank* MyTank;
 	
+	UPROPERTY( EditAnywhere )
+	float CrosshairX = 0.5f;
+	UPROPERTY( EditAnywhere )
+	float CrosshairY = 0.4f;
+	UPROPERTY( EditAnywhere )
+	float ShootRange = 1000000.0f; // 10km shoot range
+	
+	bool GetAimDirection(FVector&) const;
+	
 public:
 	virtual void BeginPlay() override;
+	virtual void Tick(float) override;
 	ATank* GetTank();
 	
 };
