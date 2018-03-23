@@ -25,7 +25,7 @@ private:
 	float ShootRange = 1000000.0f; // 10km shoot range
 	
 	bool GetAimDirection(FVector&) const;
-	bool LineTraceTankAim() const;
+	bool LineTraceTankAim(FVector&) const;
 	
 public:
 	virtual void BeginPlay() override;

@@ -28,27 +28,38 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     
-    if(LineTraceTankAim()) UE_LOG(LogTemp, Warning, TEXT("line good"));
+    FVector HitSpot;
+    if(LineTraceTankAim(HitSpot)) UE_LOG(LogTemp, Warning, TEXT("line good, hit: %s"), *(HitSpot.ToString()));
 }
 
-bool ATankPlayerController::LineTraceTankAim() const
+bool ATankPlayerController::LineTraceTankAim(FVector& HitLocation) const
 {
     auto AimDirection = FVector(0.0f);
     GetAimDirection(AimDirection);
     
     //get start and end of trace line
-    auto CamPos = GetAutoActivateCameraForPlayer()->GetActorLocation(); //start
-    auto TraceEnd = CamPos + AimDirection*ShootRange;                   //end
+    auto CamPos = PlayerCameraManager->GetCameraLocation(); //start
+    auto TraceEnd = CamPos + AimDirection*ShootRange;       //end
     
     FHitResult HitResult; //output
-    return GetWorld()->LineTraceSingleByChannel
+    FCollisionQueryParams query;
+        query.AddIgnoredActor(MyTank);
+    if( GetWorld()->LineTraceSingleByChannel
         (
             HitResult,
             CamPos, TraceEnd,
             ECollisionChannel::ECC_Visibility,
-            FCollisionQueryParams::DefaultQueryParam,
-            FCollisionResponseParams::DefaultResponseParam
-        );
+            query
+        )
+      )
+    {
+        HitLocation = HitResult.ImpactPoint;
+        return true;
+    } else {
+        HitLocation = FVector(0.0f);
+    }
+    
+    return false;
 }
 
 bool ATankPlayerController::GetAimDirection(FVector& OutAimDirection) const
