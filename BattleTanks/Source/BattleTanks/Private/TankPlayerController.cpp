@@ -28,8 +28,8 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     
-    FVector HitSpot;
-    if(LineTraceTankAim(HitSpot)) UE_LOG(LogTemp, Warning, TEXT("line good, hit: %s"), *(HitSpot.ToString()));
+    FVector HitLocation;
+    if(LineTraceTankAim(HitLocation)) MyTank->AimAt(HitLocation);
 }
 
 bool ATankPlayerController::LineTraceTankAim(FVector& HitLocation) const

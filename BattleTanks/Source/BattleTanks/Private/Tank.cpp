@@ -32,3 +32,10 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void ATank::AimAt(FVector HitLocation)
+{
+	auto DebugMsg = GetName() + FString(" aiming at ") + HitLocation.ToString();
+	if(GEngine)
+		GEngine->AddOnScreenDebugMessage((int32)GetUniqueID(), 15.0f, FColor::Yellow, *DebugMsg);
+}
+

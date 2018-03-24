@@ -13,14 +13,16 @@ void ATankAIController::BeginPlay()
     if(!ThisTank)
     {
         UE_LOG(LogTemp, Warning, TEXT("AI %s HAS NO FUCCIN TANK"), *GetName());
+        PrimaryActorTick.bCanEverTick = false;
     }
-    
-    Target = GetPlayerTank();
 }
 
 void ATankAIController::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    
+    Target = GetPlayerTank();
+    if(Target) ThisTank->AimAt(Target->GetActorLocation());
 }
 
 ATank* ATankAIController::GetPlayerTank()
