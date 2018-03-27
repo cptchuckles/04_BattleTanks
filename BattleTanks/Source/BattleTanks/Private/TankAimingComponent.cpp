@@ -33,15 +33,23 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::DoTheAim(const FVector& HitLocation, const float LaunchSpeed)
 {
-	auto ShotVelocity = FVector(0.0f);
-	auto BarrelLocation = Barrel->GetComponentLocation();
+	if(!Barrel) {
+		UE_LOG(LogTemp, Warning, TEXT("%s has no Barrel reference"), *GetName());
+		return;
+	}
+	
+	auto OutShotVelocity = FVector(0.0f);
+	auto MuzzleLocation = Barrel->GetSocketLocation(FName("Muzzle"));
 	TArray<AActor*> Self; Self.Add( GetOwner() );
 	auto hit = UGameplayStatics::SuggestProjectileVelocity(
-		GetWorld(), ShotVelocity, BarrelLocation, HitLocation, LaunchSpeed,
-		false, 0.f, 0.f, ESuggestProjVelocityTraceOption::Type::DoNotTrace,
-		FCollisionResponseParams::DefaultResponseParam, Self, false);
+		this, OutShotVelocity, MuzzleLocation, HitLocation, LaunchSpeed,
+		false, 0.f,0.f, ESuggestProjVelocityTraceOption::Type::DoNotTrace,
+		FCollisionResponseParams::DefaultResponseParam, Self, false
+	);
 	
-	auto DebugMsg = GetOwner()->GetName() + FString(" aiming via " + ShotVelocity.ToString() + " -- hit? " + FString::FromInt(hit));
+	auto ShotNormal = OutShotVelocity.GetSafeNormal();
+	
+	auto DebugMsg = GetOwner()->GetName() + FString(" aiming via " + ShotNormal.ToString() + " -- hit? " + FString::FromInt(hit));
 	if(GEngine)
 		GEngine->AddOnScreenDebugMessage((int32)GetOwner()->GetUniqueID(), 15.0f, FColor::Yellow, *DebugMsg);
 }
