@@ -17,7 +17,7 @@ public:
 	UTankAimingComponent();
 	
 	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
-	void DoTheAim(const FVector&);
+	void DoTheAim(const FVector&, const float);
 
 protected:
 	// Called when the game starts

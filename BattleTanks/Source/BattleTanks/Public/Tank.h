@@ -18,8 +18,8 @@ public:
 	
 	void AimAt(FVector HitLocation);
 	
-	UFUNCTION( BlueprintCallable, Category = Setup )
-	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -27,13 +27,14 @@ protected:
 	
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION( BlueprintCallable, Category = Setup )
+	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
 	
-	
+	UPROPERTY( EditAnywhere, Category = Firing )
+	float LaunchSpeed = 100000.0f; // 1000m/s
+
 };

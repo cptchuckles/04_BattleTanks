@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAimingComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values for this component's properties
@@ -30,10 +31,17 @@ void UTankAimingComponent::BeginPlay()
 }
 
 
-void UTankAimingComponent::DoTheAim(const FVector& AimSpot)
+void UTankAimingComponent::DoTheAim(const FVector& HitLocation, const float LaunchSpeed)
 {
-	auto BarrelLocation = Barrel->GetComponentLocation().ToString();
-	auto DebugMsg = GetOwner()->GetName() + FString(" aiming at ") + AimSpot.ToString() + " from " + BarrelLocation;
+	auto ShotVelocity = FVector(0.0f);
+	auto BarrelLocation = Barrel->GetComponentLocation();
+	TArray<AActor*> Self; Self.Add( GetOwner() );
+	auto hit = UGameplayStatics::SuggestProjectileVelocity(
+		GetWorld(), ShotVelocity, BarrelLocation, HitLocation, LaunchSpeed,
+		false, 0.f, 0.f, ESuggestProjVelocityTraceOption::Type::DoNotTrace,
+		FCollisionResponseParams::DefaultResponseParam, Self, false);
+	
+	auto DebugMsg = GetOwner()->GetName() + FString(" aiming via " + ShotVelocity.ToString() + " -- hit? " + FString::FromInt(hit));
 	if(GEngine)
 		GEngine->AddOnScreenDebugMessage((int32)GetOwner()->GetUniqueID(), 15.0f, FColor::Yellow, *DebugMsg);
 }
