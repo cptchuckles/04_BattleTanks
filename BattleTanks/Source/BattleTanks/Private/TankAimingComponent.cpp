@@ -21,16 +21,6 @@ void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* BarrelToSet)
 }
 
 
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-	
-}
-
-
 void UTankAimingComponent::DoTheAim(const FVector& HitLocation, const float LaunchSpeed)
 {
 	if(!Barrel) {
@@ -41,25 +31,36 @@ void UTankAimingComponent::DoTheAim(const FVector& HitLocation, const float Laun
 	auto OutShotVelocity = FVector(0.0f);
 	auto MuzzleLocation = Barrel->GetSocketLocation(FName("Muzzle"));
 	TArray<AActor*> Self; Self.Add( GetOwner() );
-	auto hit = UGameplayStatics::SuggestProjectileVelocity(
+	auto bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
 		this, OutShotVelocity, MuzzleLocation, HitLocation, LaunchSpeed,
 		false, 0.f,0.f, ESuggestProjVelocityTraceOption::Type::DoNotTrace,
 		FCollisionResponseParams::DefaultResponseParam, Self, false
 	);
 	
-	auto ShotNormal = OutShotVelocity.GetSafeNormal();
-	
-	auto DebugMsg = GetOwner()->GetName() + FString(" aiming via " + ShotNormal.ToString() + " -- hit? " + FString::FromInt(hit));
-	if(GEngine)
-		GEngine->AddOnScreenDebugMessage((int32)GetOwner()->GetUniqueID(), 15.0f, FColor::Yellow, *DebugMsg);
+	if(bHaveAimSolution)
+	{
+		auto ShotNormal = OutShotVelocity.GetSafeNormal();
+		
+		MoveBarrelTowards(ShotNormal);
+		
+		auto DebugMsg = GetOwner()->GetName() + FString(" aiming via " + ShotNormal.ToString());
+		if(GEngine)
+			GEngine->AddOnScreenDebugMessage((int32)GetOwner()->GetUniqueID(), 15.0f, FColor::Yellow, *DebugMsg);
+	}
 }
 
 
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UTankAimingComponent::MoveBarrelTowards(const FVector& AimDirection)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
+	auto AimAsRotator = AimDirection.Rotation();
+	
+	//get orientation of barrel
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	
+	//determine difference between yaw and pitch
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
+	
+	//step barrel towards AimDirection given max speeds
+	//check for a threshhold and then say clear to fire
 }
 
