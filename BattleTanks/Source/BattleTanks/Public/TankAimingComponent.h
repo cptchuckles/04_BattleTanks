@@ -19,9 +19,6 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 	
-	void BeginPlay() override;
-	void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
-	
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 	void SetTurretReference(UTankTurret* TurretToSet);
 	void DoTheAim(const FVector&, const float);
