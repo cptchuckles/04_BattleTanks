@@ -2,7 +2,9 @@
 
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
 
 // Sets default values for this component's properties
@@ -33,11 +35,21 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 	Barrel = BarrelToSet;
 }
 
+void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
+{
+	Turret = TurretToSet;
+}
+
 
 void UTankAimingComponent::DoTheAim(const FVector& HitLocation, const float LaunchSpeed)
 {
 	if(!Barrel) {
 		UE_LOG(LogTemp, Warning, TEXT("%s has no Barrel reference"), *GetName());
+		return;
+	}
+	
+	if(!Turret) {
+		UE_LOG(LogTemp, Warning, TEXT("%s has no Turret reference"), *GetName());
 		return;
 	}
 	
@@ -56,7 +68,7 @@ void UTankAimingComponent::DoTheAim(const FVector& HitLocation, const float Laun
 		
 		MoveBarrelTowards(ShotNormal);
 		
-		auto DebugMsg = GetOwner()->GetName() + FString(" aiming via " + ShotNormal.ToString());
+		auto DebugMsg = GetOwner()->GetName() + FString(" aiming at " + HitLocation.ToString());
 		if(GEngine)
 			GEngine->AddOnScreenDebugMessage((int32)GetOwner()->GetUniqueID(), 15.0f, FColor::Yellow, *DebugMsg);
 	}
@@ -65,12 +77,49 @@ void UTankAimingComponent::DoTheAim(const FVector& HitLocation, const float Laun
 
 void UTankAimingComponent::MoveBarrelTowards(const FVector& AimDirection)
 {
-	auto AimAsRotator = AimDirection.Rotation();
+	auto BarrelDirection = Barrel->GetForwardVector();	
 	
-	//get orientation of barrel and difference
-	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
-	auto DeltaRotator = AimAsRotator - BarrelRotator;
+	/*
+	//AimDirection is worldspace, we need to adjust it for local space
+	auto TankPitchRoll = GetOwner()->GetActorRotation();
+	TankPitchRoll.Yaw = 0.f;
+	auto LocalAimDir = TankPitchRoll.RotateVector(AimDirection);
+	*/
 	
+	auto DeltaRotator = FQuat::FindBetweenVectors(BarrelDirection, AimDirection).Rotator();
+	
+	//yaw turret, pitch barrel
+	Turret->TurnTurret(DeltaRotator.Yaw);
 	Barrel->ElevateBarrel(DeltaRotator.Pitch);
+	
+	/*
+	//draw original aim line
+	DrawDebugLine(
+		GetWorld(),
+		Barrel->GetSocketLocation(FName("Muzzle")),
+		Barrel->GetSocketLocation(FName("Muzzle")) + AimDirection*500,
+		FColor::Red,
+		false
+	);
+	
+	//draw the "local" aim line
+	DrawDebugLine(
+		GetWorld(),
+		Turret->GetSocketLocation(FName("Barrel")),
+		Turret->GetSocketLocation(FName("Barrel")) + LocalAimDir*800,
+		FColor::Yellow,
+		false
+	);
+	
+	//draw the horizontal line
+	BarrelDirection.Z = 0.f;
+	DrawDebugLine(
+		GetWorld(),
+		Turret->GetSocketLocation(FName("Barrel")),
+		Turret->GetSocketLocation(FName("Barrel")) + BarrelDirection*1000,
+		FColor::Blue,
+		false
+	);
+	*/
 }
 
