@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAimingComponent.h"
+#include "TankBarrel.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -15,7 +16,7 @@ UTankAimingComponent::UTankAimingComponent()
 }
 
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
@@ -54,13 +55,10 @@ void UTankAimingComponent::MoveBarrelTowards(const FVector& AimDirection)
 {
 	auto AimAsRotator = AimDirection.Rotation();
 	
-	//get orientation of barrel
+	//get orientation of barrel and difference
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
-	
-	//determine difference between yaw and pitch
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	
-	//step barrel towards AimDirection given max speeds
-	//check for a threshhold and then say clear to fire
+	Barrel->ElevateBarrel(5.0f); //TODO: remove magic number
 }
 
