@@ -2,10 +2,11 @@
 
 #pragma once
 
-#include "Tank.h"
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
+
+class ATank;
 
 /**
  * 
@@ -24,6 +25,7 @@ private:
 	UPROPERTY( EditAnywhere )
 	float ShootRange = 1000000.0f; // 10km shoot range
 	
+	void AimTowardsCrosshair();
 	bool GetAimDirection(FVector&) const;
 	bool LineTraceTankAim(FVector&) const;
 	

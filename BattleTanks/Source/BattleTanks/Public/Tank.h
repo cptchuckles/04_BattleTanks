@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "TankAimingComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
 class UTankBarrel;
+class UTankAimingComponent;
 
 
 UCLASS()
@@ -20,13 +20,8 @@ public:
 	ATank();
 	
 	void AimAt(FVector HitLocation);
-	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 	
 	UTankAimingComponent* TankAimingComponent = nullptr;
 

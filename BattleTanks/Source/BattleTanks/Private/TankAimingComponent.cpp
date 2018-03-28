@@ -15,6 +15,18 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
+void UTankAimingComponent::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	//UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent::TickComponent on %s"), *(GetOwner()->GetName()));
+}
+
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
