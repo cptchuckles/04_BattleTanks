@@ -9,6 +9,7 @@
 class UTankBarrel;
 class UTankTurret;
 class UTankAimingComponent;
+class AProjectile;
 
 
 UCLASS()
@@ -39,6 +40,10 @@ private:
 	void Fire();
 	
 	UPROPERTY( EditAnywhere, Category = Firing )
-	float LaunchSpeed = 100000.0f; // 1000m/s
+	float LaunchSpeed = 8000.0f; // 80m/s
+	UPROPERTY( EditAnywhere, Category = Firing )
+	TSubclassOf<AProjectile> ProjectileBP = nullptr;
+	
+	UTankBarrel* Barrel = nullptr; //local barrel handle
 
 };
