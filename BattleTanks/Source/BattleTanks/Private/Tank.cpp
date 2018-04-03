@@ -43,7 +43,7 @@ void ATank::Fire()
 {
 	if(!Barrel) return;
 	
-	GetWorld()->SpawnActor<AProjectile>
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>
 	(
 		ProjectileBP,
 		Barrel->GetSocketLocation(FName("Muzzle")),
@@ -51,4 +51,6 @@ void ATank::Fire()
 	);
 	
 	UE_LOG(LogTemp, Warning, TEXT("shots fired!!!1 by %s"), *GetName());
+	
+	Projectile->LaunchProjectile(LaunchSpeed);
 }
