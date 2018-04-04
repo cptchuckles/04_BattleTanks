@@ -41,7 +41,10 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 
 void ATank::Fire()
 {
-	if(!Barrel) return;
+	auto GameTime = GetWorld()->GetTimeSeconds();
+	bool isLoaded = (GameTime - LastFireTime) >= ShellLoadDelay;
+	if(!Barrel || !isLoaded) return;
+	LastFireTime = GameTime;
 	
 	auto Projectile = GetWorld()->SpawnActor<AProjectile>
 	(
@@ -49,8 +52,11 @@ void ATank::Fire()
 		Barrel->GetSocketLocation(FName("Muzzle")),
 		Barrel->GetSocketRotation(FName("Muzzle"))
 	);
-	
-	UE_LOG(LogTemp, Warning, TEXT("shots fired!!!1 by %s"), *GetName());
-	
-	Projectile->LaunchProjectile(LaunchSpeed);
+		
+	if(Projectile){
+		UE_LOG(LogTemp, Warning, TEXT("shots fired!!!1 by %s"), *GetName());
+		Projectile->LaunchProjectile(LaunchSpeed);
+	} else {
+		UE_LOG(LogTemp, Warning, TEXT("%s failed to fire"), *GetName());		
+	}
 }

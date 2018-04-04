@@ -50,16 +50,20 @@ void UTankAimingComponent::DoTheAim(const FVector& HitLocation, const float Laun
 		FCollisionResponseParams::DefaultResponseParam, Self, false
 	);
 	
+	FString DebugMsg;
 	if(bHaveAimSolution)
 	{
 		auto ShotNormal = OutShotVelocity.GetSafeNormal();
 		
 		MoveBarrelTowards(ShotNormal);
 		
-		auto DebugMsg = GetOwner()->GetName() + FString(" aiming at " + HitLocation.ToString());
-		if(GEngine)
-			GEngine->AddOnScreenDebugMessage((int32)GetOwner()->GetUniqueID(), 15.0f, FColor::Yellow, *DebugMsg);
+		DebugMsg = GetOwner()->GetName() + FString(" aiming at " + HitLocation.ToString());
+	} else {
+		DebugMsg = GetOwner()->GetName() + FString(" doesn't have aim solution");
 	}
+	
+	if(GEngine)
+		GEngine->AddOnScreenDebugMessage((int32)GetOwner()->GetUniqueID(), 15.0f, FColor::Yellow, *DebugMsg);
 }
 
 

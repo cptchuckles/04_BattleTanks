@@ -29,5 +29,6 @@ protected:
 
 private:	
 	UTankShellMovementComponent* ShellMovement = nullptr;
+	void SetupShellMovementComponent();
 	
 };

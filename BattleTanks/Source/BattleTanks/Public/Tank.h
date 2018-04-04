@@ -23,8 +23,10 @@ public:
 	
 	void AimAt(FVector HitLocation);
 
-protected:
+	UFUNCTION( BlueprintCallable, Category = Tankiness )
+	void Fire();
 	
+protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
 private:
@@ -36,13 +38,14 @@ private:
 	UFUNCTION( BlueprintCallable, Category = Setup )
 	void SetTurretReference(UTankTurret* TurretToSet);
 	
-	UFUNCTION( BlueprintCallable, Category = Tankiness )
-	void Fire();
 	
 	UPROPERTY( EditAnywhere, Category = Firing )
 	float LaunchSpeed = 8000.0f; // 80m/s
-	UPROPERTY( EditAnywhere, Category = Firing )
+	UPROPERTY( EditDefaultsOnly, Category = Firing )
 	TSubclassOf<AProjectile> ProjectileBP = nullptr;
+	UPROPERTY( EditDefaultsOnly, Category = Firing )
+	float ShellLoadDelay = 3.0; //3 second load time
+	float LastFireTime = 0.0;	//annoying timestamp variable
 	
 	UTankBarrel* Barrel = nullptr; //local barrel handle
 

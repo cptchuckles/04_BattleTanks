@@ -8,6 +8,7 @@
 void ATankAIController::BeginPlay()
 {
     Super::BeginPlay();
+    PrimaryActorTick.bCanEverTick = true;
     
     // verify muh tank
     ThisTank = Cast<ATank>(GetPawn());
@@ -22,8 +23,12 @@ void ATankAIController::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     
-    Target = GetPlayerTank();
-    if(Target) ThisTank->AimAt(Target->GetActorLocation());
+    if(!Target){
+        Target = GetPlayerTank();
+    } else {
+        ThisTank->AimAt(Target->GetActorLocation());
+        ThisTank->Fire();
+    }
 }
 
 ATank* ATankAIController::GetPlayerTank()
@@ -34,4 +39,3 @@ ATank* ATankAIController::GetPlayerTank()
     UE_LOG(LogTemp, Warning, TEXT("AI %s didn't find player tank"), *GetName());
     return nullptr;
 }
-
