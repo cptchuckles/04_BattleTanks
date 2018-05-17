@@ -54,7 +54,6 @@ void ATank::Fire()
 	);
 		
 	if(Projectile){
-		UE_LOG(LogTemp, Warning, TEXT("shots fired!!!1 by %s"), *GetName());
 		Projectile->LaunchProjectile(LaunchSpeed);
 	} else {
 		UE_LOG(LogTemp, Warning, TEXT("%s failed to fire"), *GetName());		

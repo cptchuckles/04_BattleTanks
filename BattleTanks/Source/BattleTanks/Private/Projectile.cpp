@@ -43,8 +43,6 @@ void AProjectile::LaunchProjectile(float Speed)
 	}
 	if(!ShellMovement) return;
 	
-	UE_LOG(LogTemp, Warning, TEXT("Projectile launched at speed %f"), Speed);
-	
 	ShellMovement->SetVelocityInLocalSpace(FVector::ForwardVector * Speed);
 	ShellMovement->Activate();
 }
