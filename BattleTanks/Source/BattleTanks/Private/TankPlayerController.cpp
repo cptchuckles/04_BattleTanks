@@ -7,20 +7,11 @@
 void ATankPlayerController::BeginPlay()
 {
     Super::BeginPlay();
-    
-    MyTank = Cast<ATank>(GetPawn());
-    if(MyTank)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Player %s got tank %s"), *GetName(), *(MyTank->GetName()));
-    } else {
-        UE_LOG(LogTemp, Warning, TEXT("Player %s didn't got tank"), *GetName());
-    }
 }
 
 ATank* ATankPlayerController::GetTank()
 {
-    if(MyTank) return MyTank;
-    return nullptr;
+    return MyTank ? MyTank : nullptr;
 }
 
 void ATankPlayerController::Tick(float DeltaSeconds)

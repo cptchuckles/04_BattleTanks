@@ -9,6 +9,7 @@
 class UTankBarrel;
 class UTankTurret;
 class UTankAimingComponent;
+class UTankMovementComponent;
 class AProjectile;
 
 
@@ -28,7 +29,10 @@ public:
 	
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
-
+	
+	UPROPERTY(BlueprintReadOnly)
+	UTankMovementComponent* TankMovementComponent = nullptr;
+	
 private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -37,6 +41,9 @@ private:
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 	UFUNCTION( BlueprintCallable, Category = Setup )
 	void SetTurretReference(UTankTurret* TurretToSet);
+	
+	//UFUNCTION( BlueprintCallable, Category = Movement)
+	//void MoveIntention(float Throw) const;
 	
 	
 	UPROPERTY( EditDefaultsOnly, Category = Firing )
