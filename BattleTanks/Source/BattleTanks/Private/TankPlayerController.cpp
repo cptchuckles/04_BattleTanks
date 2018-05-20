@@ -7,11 +7,13 @@
 void ATankPlayerController::BeginPlay()
 {
     Super::BeginPlay();
+    MyTank = Cast<ATank>(GetPawn());
 }
 
 ATank* ATankPlayerController::GetTank()
 {
-    return MyTank ? MyTank : nullptr;
+    if(!MyTank) return nullptr;
+    return MyTank;
 }
 
 void ATankPlayerController::Tick(float DeltaSeconds)
@@ -23,7 +25,10 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-    if(!MyTank) return;
+    if(!MyTank) {
+        UE_LOG(LogTemp, Warning, TEXT("AimTowardsCrosshair() failed because MyTank was unspecified"));
+        return;
+    }
     
     FVector HitLocation;
     if(LineTraceTankAim(HitLocation)) MyTank->AimAt(HitLocation);

@@ -25,11 +25,6 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-//void ATank::MoveIntention(float Throw) const
-//{
-//	TankMovementComponent->IntendMoveForward(Throw);
-//}
-
 void ATank::AimAt(FVector HitLocation)
 {
 	TankAimingComponent->DoTheAim(HitLocation, LaunchSpeed);
