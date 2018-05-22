@@ -7,5 +7,8 @@
 		"E:/Projects/Udemy/repo/04_BattleTanks/BattleTanks/Intermediate": true,
 		"E:/Projects/Udemy/repo/04_BattleTanks/BattleTanks/Saved": true
 	},
-	"C_Cpp.errorSquiggles": "Disabled"
+	"C_Cpp.errorSquiggles": "Disabled",
+	"files.associations": {
+		"*.rh": "cpp"
+	}
 }

@@ -21,6 +21,9 @@ private:
 	
 	ATank* GetPlayerTank();
 	
+	UPROPERTY(EditAnywhere, Category = "Navigation")
+	float AcceptanceRadius = 3000.f; //30m acceptance radius for pathfinding, assuming cm
+	
 public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float) override;

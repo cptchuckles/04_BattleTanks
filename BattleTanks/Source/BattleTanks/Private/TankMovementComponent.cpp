@@ -16,6 +16,11 @@ void UTankMovementComponent::Initialize(UTankTrackComponent* LeftTrackToSet, UTa
     RightTrack = RightTrackToSet;
 }
 
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
+{
+    UE_LOG(LogTemp, Warning, TEXT("%s move velocity is %s"), *(MyTank->GetName()), *MoveVelocity.ToString());
+}
+
 void UTankMovementComponent::IntendMoveForward(float Throw)
 {
     Throw = FMath::Clamp(Throw, -1.f, 1.f);

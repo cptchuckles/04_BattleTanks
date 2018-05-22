@@ -26,6 +26,14 @@ void ATankAIController::Tick(float DeltaSeconds)
     if(!Target){
         Target = GetPlayerTank();
     } else {
+        auto PathfindResult = MoveToActor(
+                                            Target,
+                                            AcceptanceRadius,
+                                            true,
+                                            true,
+                                            false
+                                        );
+        
         ThisTank->AimAt(Target->GetActorLocation());
         ThisTank->Fire();
     }
