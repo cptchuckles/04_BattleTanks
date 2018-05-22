@@ -20,8 +20,10 @@ class BATTLETANKS_API UTankMovementComponent : public UNavMovementComponent
 public:
 	UTankMovementComponent();
 
-	UFUNCTION( BlueprintCallable, Category = "Movement" )
+	UFUNCTION( BlueprintCallable, Category = "Input" )
 	void IntendMoveForward(float Throw);
+	UFUNCTION( BlueprintCallable, Category = "Input" )
+	void IntendTurnRight(float Throw);
 	UFUNCTION( BlueprintCallable, Category = "Setup" )
 	void Initialize(UTankTrackComponent* LeftTrackToSet, UTankTrackComponent* RightTrackToSet);
 	

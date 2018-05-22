@@ -11,6 +11,7 @@ UTankMovementComponent::UTankMovementComponent()
 
 void UTankMovementComponent::Initialize(UTankTrackComponent* LeftTrackToSet, UTankTrackComponent* RightTrackToSet)
 {
+    if(!(LeftTrackToSet && RightTrackToSet)) return;
     LeftTrack = LeftTrackToSet;
     RightTrack = RightTrackToSet;
 }
@@ -22,6 +23,13 @@ void UTankMovementComponent::IntendMoveForward(float Throw)
     if(!(LeftTrack && RightTrack)) return;
     LeftTrack->SetThrottle(Throw);
     RightTrack->SetThrottle(Throw);
+}
+
+void UTankMovementComponent::IntendTurnRight(float Throw)
+{
+    Throw = FMath::Clamp(Throw, -1.f, 1.f);
     
-    UE_LOG(LogTemp, Warning, TEXT("%s at throw %f"), *GetName(), Throw);
+    if(!(LeftTrack && RightTrack)) return;
+    LeftTrack->SetThrottle(Throw);
+    RightTrack->SetThrottle(-Throw);
 }
