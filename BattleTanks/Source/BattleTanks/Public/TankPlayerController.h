@@ -32,6 +32,8 @@ private:
 public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float) override;
+	
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank* GetTank();
 	
 };

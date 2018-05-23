@@ -47,12 +47,12 @@ bool ATankPlayerController::LineTraceTankAim(FVector& HitLocation) const
     FCollisionQueryParams query;
         query.AddIgnoredActor(MyTank);
     if( GetWorld()->LineTraceSingleByChannel
-        (
-            HitResult,
-            CamPos, TraceEnd,
-            ECollisionChannel::ECC_Visibility,
-            query
-        )
+                    (
+                        HitResult,
+                        CamPos, TraceEnd,
+                        ECollisionChannel::ECC_Visibility,
+                        query
+                    )
       )
     {
         HitLocation = HitResult.ImpactPoint;
