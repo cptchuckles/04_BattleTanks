@@ -21,16 +21,12 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
     AActor* Owner = GetOwner();
     auto MoveNorm = MoveVelocity.GetSafeNormal();
     
-    UE_LOG(LogTemp, Warning, TEXT("%s move velocity is %s"), *(Owner->GetName()), *MoveNorm.ToString());
-    UE_LOG(LogTemp, Warning, TEXT("%s"), *(GetOwner()->GetActorLocation().ToString()));
-    
-    
     auto Front = Owner->GetActorForwardVector().GetSafeNormal();
     float ForwardThrow = FVector::DotProduct(Front, MoveNorm);
     IntendMoveForward(ForwardThrow*0.4f);
     
-    auto Right = MyTank->GetActorRightVector().GetSafeNormal();
-    float RightThrow = FVector::DotProduct(MoveNorm, Right);
+    auto Cross = FVector::CrossProduct(Front, MoveNorm);
+    float RightThrow = Cross.Z;
     IntendTurnRight(RightThrow);
 }
 
