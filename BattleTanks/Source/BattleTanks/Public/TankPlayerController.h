@@ -16,7 +16,7 @@ class BATTLETANKS_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 private:
-	ATank* MyTank;
+	ATank* MyTank = nullptr;
 	
 	UPROPERTY( EditAnywhere )
 	float CrosshairX = 0.5f;
@@ -33,7 +33,7 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float) override;
 	
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	ATank* GetTank();
+	UFUNCTION(BlueprintPure, Category = "Setup")
+	ATank* GetControlledTank();
 	
 };

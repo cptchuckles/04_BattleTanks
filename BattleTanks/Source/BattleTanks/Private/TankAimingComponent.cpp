@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAimingComponent.h"
+#include "Tank.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
 #include "Kismet/GameplayStatics.h"
@@ -26,6 +27,17 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
 {
 	Turret = TurretToSet;
+}
+
+const UTankBarrel* UTankAimingComponent::GetBarrel() { return Barrel == nullptr ? nullptr : const_cast<const UTankBarrel*>(Barrel); }
+const UTankTurret* UTankAimingComponent::GetTurret() { return Turret == nullptr ? nullptr : const_cast<const UTankTurret*>(Turret); }
+
+void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
+{
+	Cast<ATank>(GetOwner())->SetTankAimingComponent(this);
+	
+	SetBarrelReference(BarrelToSet);
+	SetTurretReference(TurretToSet);
 }
 
 

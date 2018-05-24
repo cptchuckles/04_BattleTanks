@@ -21,6 +21,7 @@ class BATTLETANKS_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank();
+	void SetTankAimingComponent(UTankAimingComponent* ComponentToSet);
 	
 	void AimAt(FVector HitLocation);
 
@@ -28,6 +29,7 @@ public:
 	void Fire();
 	
 protected:
+	UPROPERTY(BlueprintReadWrite)
 	UTankAimingComponent* TankAimingComponent = nullptr;
 	
 	//UPROPERTY(BlueprintReadOnly)
@@ -37,19 +39,25 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION( BlueprintCallable, Category = Setup )
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
-	UFUNCTION( BlueprintCallable, Category = Setup )
-	void SetTurretReference(UTankTurret* TurretToSet);	
+	//UFUNCTION( BlueprintCallable, Category = "Setup" )
+	//void SetBarrelReference(UTankBarrel* BarrelToSet);
 	
-	UPROPERTY( EditDefaultsOnly, Category = Firing )
+	//UFUNCTION( BlueprintCallable, Category = "Setup" )
+	//void SetTurretReference(UTankTurret* TurretToSet);	
+	
+	bool CheckAimingComponentPtr(FString Message);
+	
+	UPROPERTY( EditDefaultsOnly, Category = "Firing" )
 	float LaunchSpeed = 8000.0f; // 80m/s
-	UPROPERTY( EditDefaultsOnly, Category = Firing )
+	
+	UPROPERTY( EditDefaultsOnly, Category = "Firing" )
 	TSubclassOf<AProjectile> ProjectileBP = nullptr;
-	UPROPERTY( EditDefaultsOnly, Category = Firing )
+	
+	UPROPERTY( EditDefaultsOnly, Category = "Firing" )
 	float ShellLoadDelay = 3.0; //3 second load time
+	
 	float LastFireTime = 0.0;	//annoying timestamp variable
 	
-	UTankBarrel* Barrel = nullptr; //local barrel handle
+	//UTankBarrel* Barrel = nullptr; //local barrel handle
 
 };

@@ -10,10 +10,9 @@ void ATankPlayerController::BeginPlay()
     MyTank = Cast<ATank>(GetPawn());
 }
 
-ATank* ATankPlayerController::GetTank()
+ATank* ATankPlayerController::GetControlledTank()
 {
-    if(!MyTank) return nullptr;
-    return MyTank;
+    return Cast<ATank>(GetPawn());
 }
 
 void ATankPlayerController::Tick(float DeltaSeconds)

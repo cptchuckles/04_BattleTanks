@@ -42,7 +42,7 @@ void ATankAIController::Tick(float DeltaSeconds)
 ATank* ATankAIController::GetPlayerTank()
 {
     auto player1 = Cast<ATankPlayerController>(GetWorld()->GetFirstPlayerController());
-    if(player1) return player1->GetTank();
+    if(player1) return player1->GetControlledTank();
     
     UE_LOG(LogTemp, Warning, TEXT("AI %s didn't find player tank"), *GetName());
     return nullptr;
